@@ -1,0 +1,70 @@
+<html>
+<head>
+<script src="https://unpkg.com/vue/dist/vue.min.js"></script>
+</head>
+<body>
+<h1>Word subtraction</h1>
+<div id="app1">
+<input type="text" v-model="input1" style="width: 100%;"/><br/>
+<p style="text-align: center; font-weight: 700;">-</p>
+<input type="text" v-model="subtractthesewords" style="width: 100%;"/><br/>
+<input type="text" v-model="remainder" style="width: 100%;"/><br/>
+</div>
+
+<script language="javascript">
+let input1="";
+let subtractthesewords="";
+
+function str2map(a) {
+	let ca={};
+	for (let i=0; i<a.length; i++) {
+	 let s=a.substr(i,1);
+	 if (ca[s] == undefined) {
+	   ca[s]=1;
+	 } else {
+	   ca[s]++;			     
+	 }
+	}
+	return ca;
+}
+
+var app1=new Vue({
+        el: '#app1',
+        // define data - initial display text
+        data: {
+          input1: input1,
+          subtractthesewords: subtractthesewords
+        },
+        computed:  {
+           remainder: function() {
+	           let a=this.input1.toLowerCase().replace(/ /g,"");
+	           let b=this.subtractthesewords.toLowerCase().replace(/ /g,"");
+			   let ca=str2map(a);
+			   let cb=str2map(b);
+			   let cc={};
+				 let viable=true;
+			   for (const k in ca) {
+			   	console.log("k="+k);
+			      cc[k]=ca[k];
+			      if (cb[k] !== undefined) {
+			      cc[k]=ca[k]-cb[k];
+					  if (cc[k] ==0) {
+						delete cc[k];
+					  }
+			      }
+			   }
+			   let o="";
+			   for (const k in cc) {
+			     o+=k.repeat(cc[k]);
+			   } 
+			
+
+    	       return o;
+        	}
+        }
+  });
+
+</script>
+
+
+</body>
